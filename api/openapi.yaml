@@ -1,0 +1,405 @@
+openapi: 3.0.0
+info:
+  title: GO REST APIs
+  description: Sample User Management API based on GO REST
+  contact: {}
+  version: "1.0"
+servers:
+- url: https://gorest.co.in/public/v2
+security:
+- bearer: []
+tags:
+- name: users
+- name: posts
+- name: todos
+- name: comments
+paths:
+  /users/{userId}/todos:
+    get:
+      tags:
+      - todos
+      summary: GET USER TODOS
+      operationId: GETUSERTODOS
+      parameters:
+      - name: userId
+        in: path
+        description: (Required)
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 5888340
+      responses:
+        "200":
+          description: OK
+          content: {}
+      deprecated: false
+      x-swagger-router-controller: Todos
+    post:
+      tags:
+      - todos
+      summary: CREATE A TODOS
+      operationId: CREATEATODOS
+      parameters:
+      - name: userId
+        in: path
+        description: (Required)
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 5888340
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userId_todos_body'
+            example:
+              title: belum lunas.
+              due_on: 2024-01-22T00:00:00.000+05:30
+              status: pending
+        required: true
+      responses:
+        "201":
+          description: Created
+          content: {}
+      deprecated: false
+      x-swagger-router-controller: Todos
+  /users/{userId}/posts:
+    get:
+      tags:
+      - posts
+      summary: GET USER POST
+      operationId: GETUSERPOST
+      parameters:
+      - name: userId
+        in: path
+        description: (Required)
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 5888340
+      responses:
+        "200":
+          description: OK
+          content: {}
+      deprecated: false
+      x-swagger-router-controller: Posts
+    post:
+      tags:
+      - posts
+      summary: CREATE A POST
+      description: Create a new post for a user by providing the user's ID.
+      operationId: CREATEAPOST
+      parameters:
+      - name: userId
+        in: path
+        description: (Required) (Required) ID of the user to create a post for
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 5888340
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userId_posts_body'
+            example:
+              title: GOOGLE
+              body: TEST
+        required: true
+      responses:
+        "201":
+          description: Created
+          content: {}
+      deprecated: false
+      x-swagger-router-controller: Posts
+  /users/{userId}:
+    get:
+      tags:
+      - users
+      summary: GET USER
+      description: Retrieve information about a user by providing their ID.
+      operationId: GETUSER
+      parameters:
+      - name: userId
+        in: path
+        description: (Required) (Required) ID of the user to retrieve
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 5891150
+      responses:
+        "200":
+          description: OK
+          content: {}
+      deprecated: false
+      x-swagger-router-controller: Users
+    put:
+      tags:
+      - users
+      summary: EDIT USER
+      description: Update details of a user by providing their ID.
+      operationId: EDITUSER
+      parameters:
+      - name: userId
+        in: path
+        description: (Required)
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 5891150
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_userId_body'
+            example:
+              name: Naufal Azhar
+              email: naufal87@gmail.com
+              gender: male
+              status: inactive
+        required: true
+      responses:
+        "200":
+          description: OK
+          content: {}
+      deprecated: false
+      x-swagger-router-controller: Users
+    delete:
+      tags:
+      - users
+      summary: DELETE USER
+      description: Delete a user by providing their ID.
+      operationId: DELETEUSER
+      parameters:
+      - name: userId
+        in: path
+        description: (Required) (Required) ID of the user to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+          example: 5891149
+      responses:
+        "204":
+          description: No Content
+          content: {}
+      deprecated: false
+      x-swagger-router-controller: Users
+  /users:
+    post:
+      tags:
+      - users
+      summary: CREATE NEW USER
+      description: Create a new user by providing necessary details.
+      operationId: CREATENEWUSER
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_body'
+            example:
+              name: Naufal A
+              email: naufal87@gmail.com
+              gender: male
+              status: inactive
+        required: true
+      responses:
+        "201":
+          description: Created
+          content: {}
+      deprecated: false
+      x-swagger-router-controller: Users
+  /posts/{userId}/comments:
+    post:
+      tags:
+      - comments
+      summary: CREATE A COMMENTS
+      operationId: CREATEACOMMENTS
+      parameters:
+      - name: userId
+        in: path
+        description: (Required)
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: <integer>
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userId_comments_body'
+            example:
+              name: <string>
+              email: <string>
+              body: <string>
+        required: true
+      responses:
+        "201":
+          description: Created
+          content: {}
+      deprecated: false
+      x-swagger-router-controller: Comments
+components:
+  schemas:
+    CREATEATODOSREQUEST:
+      title: CREATEATODOSREQUEST
+      required:
+      - due_on
+      - status
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        due_on:
+          type: string
+        status:
+          type: string
+      example:
+        title: belum lunas.
+        due_on: 2024-01-22T00:00:00.000+05:30
+        status: pending
+    CREATEAPOSTREQUEST:
+      title: CREATEAPOSTREQUEST
+      required:
+      - body
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+      example:
+        title: GOOGLE
+        body: TEST
+    EDITUSERREQUEST:
+      title: EDITUSERREQUEST
+      required:
+      - email
+      - gender
+      - name
+      - status
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        gender:
+          type: string
+        status:
+          type: string
+      example:
+        name: Naufal Azhar
+        email: naufal87@gmail.com
+        gender: male
+        status: inactive
+    CREATENEWUSERREQUEST:
+      title: CREATENEWUSERREQUEST
+      required:
+      - email
+      - gender
+      - name
+      - status
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        gender:
+          type: string
+        status:
+          type: string
+      example:
+        name: Naufal A
+        email: naufal87@gmail.com
+        gender: male
+        status: inactive
+    CREATEACOMMENTSREQUEST:
+      title: CREATEACOMMENTSREQUEST
+      required:
+      - body
+      - email
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        body:
+          type: string
+      example:
+        name: <string>
+        email: <string>
+        body: <string>
+    userId_todos_body:
+      allOf:
+      - $ref: '#/components/schemas/CREATEATODOSREQUEST'
+      - example:
+          title: belum lunas.
+          due_on: 2024-01-22T00:00:00.000+05:30
+          status: pending
+    userId_posts_body:
+      allOf:
+      - $ref: '#/components/schemas/CREATEAPOSTREQUEST'
+      - example:
+          title: GOOGLE
+          body: TEST
+    users_userId_body:
+      allOf:
+      - $ref: '#/components/schemas/EDITUSERREQUEST'
+      - example:
+          name: Naufal Azhar
+          email: naufal87@gmail.com
+          gender: male
+          status: inactive
+    users_body:
+      allOf:
+      - $ref: '#/components/schemas/CREATENEWUSERREQUEST'
+      - example:
+          name: Naufal A
+          email: naufal87@gmail.com
+          gender: male
+          status: inactive
+    userId_comments_body:
+      allOf:
+      - $ref: '#/components/schemas/CREATEACOMMENTSREQUEST'
+      - example:
+          name: <string>
+          email: <string>
+          body: <string>
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
